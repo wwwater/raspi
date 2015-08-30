@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Meow</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon_cat.ico" />
+  </head>
+  <body>
+    <div class="container">
+        <div class="playlist">
+            <textarea id="current-artist" class="current" readonly></textarea>
+            <textarea id="current-song" class="current" readonly></textarea>
+        </div>
+        <div class="playback">
+            <button id="button-sleep" onclick="sleep()">
+                <input id="time-until-zzz" class="input-sleep"/>
+                <label id="label-zzz">zzZ</label>
+                <input id="time-wakeup" class="input-sleep"/>
+            </button>
+            <button class="button-pause" onclick="pause()">
+                 <img id="image-raspberry" src="images/raspi.png">
+            </button>
+            <div class="column">
+                <button class="square-element next" onclick="next()">&gt;</button>
+                <button class="square-element prev">&lt;</button>
+            </div>
+            <div class="column">
+                <input id="input-repeat" class="square-element" />
+                <button id="button-repeat" class="square-element" onclick="repeat()"></button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
