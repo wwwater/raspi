@@ -2,8 +2,9 @@
 // set default values
 
 document.getElementById("input-repeat").value = "1";
-document.getElementById("time-until-zzz").value = "80 min";
-document.getElementById("time-wakeup").value = "6:37";
+document.getElementById("time-until-zzz").value = "84 min";
+document.getElementById("time-wakeup").value = "7:07";
+document.getElementById("ruler-volume-left").width = "180px";
 var timeToGetSong = 0;
 var pageIsHidden = false;
 setInterval(clock, 1000);
@@ -12,7 +13,7 @@ function sleep() {
     var time = document.getElementById("time-until-zzz").value;
     var minutes = time.split(" ")[0];
     var remains = parseInt(minutes) || 77;
-    var wakeup = document.getElementById("time-wakeup").value || "6:27";
+    var wakeup = document.getElementById("time-wakeup").value || "7:03";
     httpRequest("post", "sleep/" + remains + "/" + wakeup);
 
 }
@@ -29,8 +30,15 @@ function repeat() {
     var value = parseInt(document.getElementById("input-repeat").value) || 1;
 }
 
+function changeVolume(e) {
+    var offsetLeft = e.layerX;
+    var volume = Math.round(offsetLeft / 360 * 100); // in per cent
+    console.log("New volume is " + volume + "%");
+    httpRequest("post", "playback/volume/" + volume, handleSuccessPlayback);
+    setVolume(volume);
+}
+
 function getCurrentSong() {
-    //if (!document["hidden"]) {
     httpRequest("get", "/current", handleSuccessPlayback);
 }
 
@@ -48,11 +56,13 @@ function clock() {
 }
 
 function handleSuccessPlayback(responseText) {
-    // console.log("server response: ", responseText);
+    console.log("server response: ", responseText);
     var json = JSON.parse(responseText);
     var current = json["song"].split(" - ");
+    var volume = json["volume"];
     document.getElementById("current-artist").value = current[0]; 
     document.getElementById("current-song").value = current[1]; 
+    setVolume(volume);
     var secondsRemain = json["secondsRemain"];
     timeToGetSong = secondsRemain + 2;
 }
@@ -70,4 +80,9 @@ function httpRequest(type, url, onSuccess) {
             }
         }
     }
+}
+
+function setVolume(value) {
+    var width = Math.round(value / 100 * 360);
+    document.getElementById("ruler-volume-left").width = width + "px";
 }

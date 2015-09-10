@@ -2,6 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 from subprocess import call, Popen, PIPE
 from os import curdir, sep, system
 import json
+import string
 
 class GetHandler(BaseHTTPRequestHandler):
 
@@ -56,6 +57,9 @@ class GetHandler(BaseHTTPRequestHandler):
                 process = Popen(["mpc", "next"], stdout = PIPE)
             elif path == "previous":
                 process = Popen(["mpc", "prev"], stdout = PIPE)
+            elif path.startswith("volume"):
+                path = path[7:]
+                process = Popen(["mpc", "volume", path], stdout = PIPE)
             else:
                 self.send_response(404)
                 return
@@ -83,8 +87,12 @@ class GetHandler(BaseHTTPRequestHandler):
         info = process.communicate()[0].split("\n")
         song = info[0]
         secondsRemain = self.getSecondsRemain(info)
-        jsonObject = json.dumps(
-                {"song": song, "secondsRemain": secondsRemain})
+        volume = self.getVolume(info)
+        jsonObject = json.dumps({
+            "song": song, 
+            "secondsRemain": secondsRemain,
+            "volume": volume
+        })
         self.send_response(200)
         self.send_header('Content-type','application/json')
         self.end_headers()
@@ -113,6 +121,14 @@ class GetHandler(BaseHTTPRequestHandler):
             seconds = time[1]
             return int(seconds) + int(minuts)*60
         return 0
+
+    def getVolume(self, mpcInfo):
+        if len(mpcInfo) > 2:
+            thirdLine = filter(lambda x: x is not "", mpcInfo[2].split(" "))
+            if len(thirdLine) > 1:
+                volume = string.strip(thirdLine[1], "%")
+                return volume
+        return 0        
 
 
 
