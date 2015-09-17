@@ -14,6 +14,17 @@ class GetHandler(BaseHTTPRequestHandler):
                 self.sendResponseFromMpcInfo(process);       
                 return 
 
+            if self.path == "/playlists":
+                process = Popen(["mpc", "lsplaylists"], stdout = PIPE)
+                playlists = process.communicate()[0].split("\n")
+                jsonObject = json.dumps(playlists)
+                self.send_response(200)
+                self.send_header('Content-type','application/json')
+                self.end_headers()
+                self.wfile.write(jsonObject)
+                return
+
+
             # automatic requests
             if self.path == "/":
                 self.path = "/index.html"
@@ -81,7 +92,21 @@ class GetHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type','text/html')
             self.end_headers()
-        return
+            return
+        
+        if self.path.startswith("/playlist"):
+            try:
+                playlist = self.path[10:]
+                process = Popen(["mpc", "clear"])
+                process.wait()
+                process = Popen(["mpc", "load", playlist])
+                process.wait()
+                process = Popen(["mpc", "play"], stdout = PIPE)
+                self.sendResponseFromMpcInfo(process) 
+                return
+            except:
+                self.send_response(404)
+                return
 
     def sendResponseFromMpcInfo(self, process):
         info = process.communicate()[0].split("\n")
