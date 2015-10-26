@@ -3,6 +3,7 @@ from subprocess import call, Popen, PIPE
 from os import curdir, sep, system
 import json
 import string
+import urllib
 
 class GetHandler(BaseHTTPRequestHandler):
 
@@ -38,6 +39,12 @@ class GetHandler(BaseHTTPRequestHandler):
                 sendReply = True
             if self.path.endswith(".ico"):
                 mimetype = "image/ico"
+                sendReply = True
+            if self.path.endswith(".woff"):
+                mimetype = "image/woff"
+                sendReply = True
+            if self.path.endswith(".ttf"):
+                mimetype = "image/ttf"
                 sendReply = True
             if self.path.endswith(".css"):
                 mimetype = "text/css"
@@ -96,7 +103,7 @@ class GetHandler(BaseHTTPRequestHandler):
         
         if self.path.startswith("/playlist"):
             try:
-                playlist = self.path[10:]
+                playlist = urllib.unquote(self.path[10:]).decode("utf-8")
                 process = Popen(["mpc", "clear"])
                 process.wait()
                 process = Popen(["mpc", "load", playlist])

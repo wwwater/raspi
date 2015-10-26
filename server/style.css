@@ -9,23 +9,44 @@ input {
     border-radius: 5px;
     background: transparent;
 }
-button {
+button, .btn {
     border: 1px solid #2F4A28;
     border-radius: 5px;
     background: transparent;
     color: white;
 }
-.container {
+.main-page-container {
     min-width: 360px;
-    min-height: 500px;
+    height: 100vh;
     background: black;
+    padding: 0;
+}
+.header {
+}
+#button-playlists {
+    background: black;
+    border: 1px solid #2F4A28;
+    color: #2F4A28;
+    float: right;
 }
 .playlist {
-    min-height: 400px;
+    min-height: 360px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.dropdown-menu {
+    right: 0;
+    left: unset !important;
+}
+
+#playlists-dropdown, .li-playlist {
+    background: #111;
+    color: #999;
+    text-align: right;
+    line-height: 2;
 }
 .current {
     width: 80%;

@@ -8,6 +8,7 @@ document.getElementById("ruler-volume-left").width = "180px";
 var timeToGetSong = 0;
 var pageIsHidden = false;
 setInterval(clock, 1000);
+getPlaylists();
 
 function sleep() {
     var time = document.getElementById("time-until-zzz").value;
@@ -85,4 +86,29 @@ function httpRequest(type, url, onSuccess) {
 function setVolume(value) {
     var width = Math.round(value / 100 * 360);
     document.getElementById("ruler-volume-left").width = width + "px";
+}
+
+function getPlaylists() {
+    httpRequest("get", "playlists", populatePlaylists);
+}
+
+function populatePlaylists(response) {
+    var element_playlists = document.getElementById("playlists-dropdown");
+    var playlists = JSON.parse(response);
+    // console.log("playlists", playists);
+    for (var i in playlists) {
+        var playlist = playlists[i];
+        //console.log("playlist", playlist);
+        var element = document.createElement("li");
+        element.textContent = playlist;
+        element.className = "li-playlist";
+        element.value = i;
+        element_playlists.appendChild(element);
+    }
+
+}
+function selectPlaylist(e) {
+    var playlist = e.target.textContent;
+    console.log("selected playlist", playlist);
+    httpRequest("post", "playlist/" + playlist, handleSuccessPlayback);
 }

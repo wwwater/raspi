@@ -6,10 +6,25 @@
     <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon_cat.ico" />
   </head>
   <body>
-    <div class="container">
+    <div class="main-page-container">
+        <div class="header">
+           <div class="dropdown">
+               <button type="button" 
+                class="btn btn-default dropdown-toggle" id="button-playlists"
+                aria-haspopup="true" aria-expanded="false"
+                data-toggle="dropdown" id="menu-playlist">
+                    <span class="glyphicon glyphicon-menu-hamburger"
+                        aria-hidden="true"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="menu-playlist"
+                    id="playlists-dropdown" onclick="selectPlaylist(event)">
+                </ul>
+            </div>
+        </div>
         <div class="playlist">
             <textarea id="current-artist" class="current" readonly></textarea>
             <textarea id="current-song" class="current" readonly></textarea>
@@ -40,5 +55,7 @@
         </div>
     </div>
     <script src="script.js"></script>
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
