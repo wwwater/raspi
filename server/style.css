@@ -30,6 +30,7 @@ button, .btn {
     float: right;
 }
 .playlist {
+    clear: both;
     min-height: 360px;
     display: flex;
     flex-direction: column;

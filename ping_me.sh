@@ -27,11 +27,11 @@ while [ 1 = 1 ]; do
             mopidy &
             echo "@MAIN:PWR=On" | telnet 192.168.1.25 50000 &>/dev/null
             sleep 40s
-            echo "@MAIN:VOL=-17.0" | telnet 192.168.1.25 50000 &>/dev/null		
+            echo "@MAIN:VOL=-23.0" | telnet 192.168.1.25 50000 &>/dev/null		
             mpc load meow 
             mpc random 
             mpc repeat  	
-            mpc volume 50
+            mpc volume 85
             mpc play 
             ping_t=300;
             counter=$init_c;
